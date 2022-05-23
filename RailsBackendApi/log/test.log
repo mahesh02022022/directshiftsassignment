@@ -1,0 +1,411 @@
+  [1m[35m (1.7ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "books"[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE TABLE "books" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "body" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "oauth_access_tokens"[0m
+  [1m[35m (4.3ms)[0m  [1m[35mCREATE TABLE "oauth_access_tokens" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "resource_owner_id" integer, "application_id" integer NOT NULL, "token" varchar NOT NULL, "refresh_token" varchar, "expires_in" integer, "revoked_at" datetime(6), "created_at" datetime(6) NOT NULL, "scopes" varchar, "previous_refresh_token" varchar DEFAULT '' NOT NULL)[0m
+  [1m[35m (4.6ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_application_id" ON "oauth_access_tokens" ("application_id")[0m
+  [1m[35m (4.6ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_refresh_token" ON "oauth_access_tokens" ("refresh_token")[0m
+  [1m[35m (5.4ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_resource_owner_id" ON "oauth_access_tokens" ("resource_owner_id")[0m
+  [1m[35m (4.8ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_token" ON "oauth_access_tokens" ("token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "oauth_applications"[0m
+  [1m[35m (4.4ms)[0m  [1m[35mCREATE TABLE "oauth_applications" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "uid" varchar NOT NULL, "secret" varchar NOT NULL, "redirect_uri" text, "scopes" varchar DEFAULT '' NOT NULL, "confidential" boolean DEFAULT 1 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (5.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_applications_on_uid" ON "oauth_applications" ("uid")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (4.9ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime(6), "remember_created_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "role" integer DEFAULT 0)[0m
+  [1m[35m (4.8ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (5.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aoauth_access_tokens" ("id" integer NOT NULL PRIMARY KEY, "resource_owner_id" integer DEFAULT NULL, "application_id" integer NOT NULL, "token" varchar NOT NULL, "refresh_token" varchar DEFAULT NULL, "expires_in" integer DEFAULT NULL, "revoked_at" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "scopes" varchar DEFAULT NULL, "previous_refresh_token" varchar DEFAULT '' NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aoauth_access_tokens_on_token" ON "aoauth_access_tokens" ("token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aoauth_access_tokens_on_resource_owner_id" ON "aoauth_access_tokens" ("resource_owner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aoauth_access_tokens_on_refresh_token" ON "aoauth_access_tokens" ("refresh_token")[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE INDEX "tindex_aoauth_access_tokens_on_application_id" ON "aoauth_access_tokens" ("application_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aoauth_access_tokens" ("id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token")
+                     SELECT "id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token" FROM "oauth_access_tokens"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "oauth_access_tokens"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "oauth_access_tokens" ("id" integer NOT NULL PRIMARY KEY, "resource_owner_id" integer DEFAULT NULL, "application_id" integer NOT NULL, "token" varchar NOT NULL, "refresh_token" varchar DEFAULT NULL, "expires_in" integer DEFAULT NULL, "revoked_at" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "scopes" varchar DEFAULT NULL, "previous_refresh_token" varchar DEFAULT '' NOT NULL, CONSTRAINT "fk_rails_732cb83ab7"
+FOREIGN KEY ("application_id")
+  REFERENCES "oauth_applications" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_application_id" ON "oauth_access_tokens" ("application_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_refresh_token" ON "oauth_access_tokens" ("refresh_token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_oauth_access_tokens_on_resource_owner_id" ON "oauth_access_tokens" ("resource_owner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_oauth_access_tokens_on_token" ON "oauth_access_tokens" ("token")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "oauth_access_tokens" ("id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token")
+                     SELECT "id","resource_owner_id","application_id","token","refresh_token","expires_in","revoked_at","created_at","scopes","previous_refresh_token" FROM "aoauth_access_tokens"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aoauth_access_tokens"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (5.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (3.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20220404030809)[0m
+  [1m[35m (3.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20220404025649),
+(20220404025721),
+(20220404025750);
+
+[0m
+  [1m[35m (5.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", "2022-05-20 09:39:39.094654"], ["updated_at", "2022-05-20 09:39:39.094654"]]
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (5.9ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "schema_sha1"], ["value", "8d4f6bd4858b1ba5d41bd26651efacd12a363343"], ["created_at", "2022-05-20 09:39:39.113520"], ["updated_at", "2022-05-20 09:39:39.113520"]]
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.4ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.240738', '2022-05-20 09:39:39.240738');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.240738', '2022-05-20 09:39:39.240738');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.242299', '2022-05-20 09:39:39.242299');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.242299', '2022-05-20 09:39:39.242299')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.4ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.388077', '2022-05-20 09:39:39.388077');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.388077', '2022-05-20 09:39:39.388077');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.388153', '2022-05-20 09:39:39.388153');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.388153', '2022-05-20 09:39:39.388153')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.394070', '2022-05-20 09:39:39.394070');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.394070', '2022-05-20 09:39:39.394070');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.394145', '2022-05-20 09:39:39.394145');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.394145', '2022-05-20 09:39:39.394145')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.399607', '2022-05-20 09:39:39.399607');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.399607', '2022-05-20 09:39:39.399607');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.399649', '2022-05-20 09:39:39.399649');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.399649', '2022-05-20 09:39:39.399649')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.405120', '2022-05-20 09:39:39.405120');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.405120', '2022-05-20 09:39:39.405120');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.405163', '2022-05-20 09:39:39.405163');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.405163', '2022-05-20 09:39:39.405163')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.410772', '2022-05-20 09:39:39.410772');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.410772', '2022-05-20 09:39:39.410772');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.410816', '2022-05-20 09:39:39.410816');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.410816', '2022-05-20 09:39:39.410816')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.416341', '2022-05-20 09:39:39.416341');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.416341', '2022-05-20 09:39:39.416341');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.416383', '2022-05-20 09:39:39.416383');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.416383', '2022-05-20 09:39:39.416383')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-20 09:39:39.422341', '2022-05-20 09:39:39.422341');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-20 09:39:39.422341', '2022-05-20 09:39:39.422341');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-20 09:39:39.422415', '2022-05-20 09:39:39.422415');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-20 09:39:39.422415', '2022-05-20 09:39:39.422415')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (1.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (1.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (19.4ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:28.739359', '2022-05-22 13:45:28.739359');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:28.739359', '2022-05-22 13:45:28.739359');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:28.751522', '2022-05-22 13:45:28.751522');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:28.751522', '2022-05-22 13:45:28.751522')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (5.7ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (1.7ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:29.039873', '2022-05-22 13:45:29.039873');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:29.039873', '2022-05-22 13:45:29.039873');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:29.044649', '2022-05-22 13:45:29.044649');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:29.044649', '2022-05-22 13:45:29.044649')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:29.064957', '2022-05-22 13:45:29.064957');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:29.064957', '2022-05-22 13:45:29.064957');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:29.065014', '2022-05-22 13:45:29.065014');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:29.065014', '2022-05-22 13:45:29.065014')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:29.070104', '2022-05-22 13:45:29.070104');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:29.070104', '2022-05-22 13:45:29.070104');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:29.070146', '2022-05-22 13:45:29.070146');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:29.070146', '2022-05-22 13:45:29.070146')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:29.074753', '2022-05-22 13:45:29.074753');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:29.074753', '2022-05-22 13:45:29.074753');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:29.074795', '2022-05-22 13:45:29.074795');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:29.074795', '2022-05-22 13:45:29.074795')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.4ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:29.079358', '2022-05-22 13:45:29.079358');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:29.079358', '2022-05-22 13:45:29.079358');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:29.079400', '2022-05-22 13:45:29.079400');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:29.079400', '2022-05-22 13:45:29.079400')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:29.084665', '2022-05-22 13:45:29.084665');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:29.084665', '2022-05-22 13:45:29.084665');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:29.084719', '2022-05-22 13:45:29.084719');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:29.084719', '2022-05-22 13:45:29.084719')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:45:29.088860', '2022-05-22 13:45:29.088860');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:45:29.088860', '2022-05-22 13:45:29.088860');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:45:29.088905', '2022-05-22 13:45:29.088905');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:45:29.088905', '2022-05-22 13:45:29.088905')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.9ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.4ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (3.6ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.530442', '2022-05-22 13:47:33.530442');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.530442', '2022-05-22 13:47:33.530442');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.535369', '2022-05-22 13:47:33.535369');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.535369', '2022-05-22 13:47:33.535369')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.4ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.774307', '2022-05-22 13:47:33.774307');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.774307', '2022-05-22 13:47:33.774307');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.774378', '2022-05-22 13:47:33.774378');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.774378', '2022-05-22 13:47:33.774378')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.780943', '2022-05-22 13:47:33.780943');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.780943', '2022-05-22 13:47:33.780943');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.780986', '2022-05-22 13:47:33.780986');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.780986', '2022-05-22 13:47:33.780986')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.787062', '2022-05-22 13:47:33.787062');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.787062', '2022-05-22 13:47:33.787062');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.787104', '2022-05-22 13:47:33.787104');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.787104', '2022-05-22 13:47:33.787104')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.792908', '2022-05-22 13:47:33.792908');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.792908', '2022-05-22 13:47:33.792908');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.793202', '2022-05-22 13:47:33.793202');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.793202', '2022-05-22 13:47:33.793202')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.6ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.7ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.799170', '2022-05-22 13:47:33.799170');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.799170', '2022-05-22 13:47:33.799170');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.799212', '2022-05-22 13:47:33.799212');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.799212', '2022-05-22 13:47:33.799212')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.808011', '2022-05-22 13:47:33.808011');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.808011', '2022-05-22 13:47:33.808011');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.808056', '2022-05-22 13:47:33.808056');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.808056', '2022-05-22 13:47:33.808056')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (0.3ms)[0m  [1m[31mDELETE FROM "books";
+DELETE FROM "users";
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyText', '2022-05-22 13:47:33.815523', '2022-05-22 13:47:33.815523');
+INSERT INTO "books" ("id", "title", "body", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyText', '2022-05-22 13:47:33.815523', '2022-05-22 13:47:33.815523');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (980190962, '2022-05-22 13:47:33.815566', '2022-05-22 13:47:33.815566');
+INSERT INTO "users" ("id", "created_at", "updated_at") VALUES (298486374, '2022-05-22 13:47:33.815566', '2022-05-22 13:47:33.815566')[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
